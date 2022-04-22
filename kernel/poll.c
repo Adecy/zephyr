@@ -587,7 +587,9 @@ static int signal_triggered_work(struct k_poll_event *event, uint32_t status)
 
 		z_abort_timeout(&twork->timeout);
 		twork->poll_result = 0;
+		k_sched_lock();
 		k_work_submit_to_queue(work_q, &twork->work);
+		k_sched_unlock();
 	}
 
 	return 0;
