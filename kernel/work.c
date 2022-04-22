@@ -374,7 +374,7 @@ int k_work_submit_to_queue(struct k_work_q *queue,
 	 * preemptible thread then yield.
 	 */
 	if ((ret > 0) && (k_is_preempt_thread() != 0)) {
-		k_yield();
+		// k_yield();
 	}
 
 	SYS_PORT_TRACING_OBJ_FUNC_EXIT(k_work, submit_to_queue, queue, work, ret);
