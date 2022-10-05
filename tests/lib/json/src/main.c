@@ -11,6 +11,7 @@
 
 struct test_nested {
 	int nested_int;
+	uint32_t _unused_member;
 	bool nested_bool;
 	const char *nested_string;
 };
@@ -19,6 +20,7 @@ struct test_struct {
 	const char *some_string;
 	int some_int;
 	bool some_bool;
+	uint32_t _unused_member;
 	struct test_nested some_nested_struct;
 	int some_array[16];
 	size_t some_array_len;
@@ -30,17 +32,20 @@ struct test_struct {
 };
 
 struct elt {
+	uint32_t _unused_member;
 	const char *name;
 	int height;
 };
 
 struct obj_array {
 	struct elt elements[10];
+	uint32_t _unused_member;
 	size_t num_elements;
 };
 
 struct test_int_limits {
 	int int_max;
+	uint32_t _unused_member;
 	int int_cero;
 	int int_min;
 };
@@ -88,11 +93,15 @@ static const struct json_obj_descr obj_limits_descr[] = {
 };
 
 struct array {
+	uint32_t _unused_member1;
+	uint32_t _unused_member2;
 	struct elt objects;
 };
 
 struct obj_array_array {
+	uint32_t _unused_member1;
 	struct array objects_array[4];
+	uint32_t _unused_member2;
 	size_t objects_array_len;
 };
 
@@ -255,10 +264,11 @@ ZTEST(lib_json_test, test_json_limits)
 		     "Integer limits not decoded correctly");
 }
 
+struct obj_array_array obj_array_array_ts;
+
 ZTEST(lib_json_test, test_json_decoding_array_array)
 {
 	int ret;
-	struct obj_array_array obj_array_array_ts;
 	char encoded[] = "{\"objects_array\":["
 			  "[{\"height\":168,\"name\":\"Simón Bolívar\"}],"
 			  "[{\"height\":173,\"name\":\"Pelé\"}],"
