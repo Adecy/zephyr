@@ -82,7 +82,8 @@ struct json_obj_descr {
 	union {
 		struct {
 			const struct json_obj_descr *sub_descr;
-			size_t sub_descr_len;
+			uint16_t sub_descr_len;
+			uint16_t sub_struct_size;
 		} object;
 		struct {
 			const struct json_obj_descr *element_descr;
@@ -109,6 +110,9 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define Z_ALIGN_SHIFT(type)	(__alignof__(type) == 1 ? 0 : \
 				 __alignof__(type) == 2 ? 1 : \
 				 __alignof__(type) == 4 ? 2 : 3)
+
+/* Helper to get the size of a member of a struct. */
+#define Z_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
 
 /**
  * @brief Helper macro to declare a descriptor for supported primitive
@@ -174,6 +178,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 			.object = { \
 				.sub_descr = sub_descr_, \
 				.sub_descr_len = ARRAY_SIZE(sub_descr_), \
+				.sub_struct_size = sizeof(struct_), \
 			}, \
 		}, \
 	}
@@ -218,11 +223,12 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
  * @param elem_descr_ Element descriptor, pointer to a descriptor array
  * @param elem_descr_len_ Number of elements in elem_descr_
  */
-#define Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_) \
+#define Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_, struct_size_) \
 	{ \
 		.object = { \
 			.sub_descr = elem_descr_, \
 			.sub_descr_len = elem_descr_len_, \
+			.sub_struct_size = struct_size_, \
 		}, \
 	}
 
@@ -311,7 +317,8 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 			.array = { \
 				.element_descr = Z_JSON_ELEMENT_DESCR(struct_, len_field_, \
 					JSON_TOK_OBJECT_START, \
-					Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_)), \
+					Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_, \
+						Z_MEMBER_SIZE(struct_, field_name_[0]))), \
 				.n_elements = (max_len_), \
 			}, \
 		}, \
@@ -429,6 +436,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 			.object = { \
 				.sub_descr = sub_descr_, \
 				.sub_descr_len = ARRAY_SIZE(sub_descr_), \
+				.sub_struct_size = sizeof(struct_), \
 			}, \
 		}, \
 	}
@@ -521,7 +529,8 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 			.array = { \
 				.element_descr = Z_JSON_ELEMENT_DESCR(struct_, len_field_, \
 					JSON_TOK_OBJECT_START, \
-					Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_)), \
+					Z_JSON_DESCR_OBJ(elem_descr_, elem_descr_len_, \
+						Z_MEMBER_SIZE(struct_, field_name_[0])), \
 				.n_elements = (max_len_), \
 			}, \
 		}, \

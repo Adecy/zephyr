@@ -504,16 +504,7 @@ static ptrdiff_t get_elem_size(const struct json_obj_descr *descr)
 	case JSON_TOK_ARRAY_START:
 		return descr->array.n_elements * get_elem_size(descr->array.element_descr);
 	case JSON_TOK_OBJECT_START: {
-		ptrdiff_t total = 0;
-		size_t i;
-
-		for (i = 0; i < descr->object.sub_descr_len; i++) {
-			ptrdiff_t s = get_elem_size(&descr->object.sub_descr[i]);
-
-			total += ROUND_UP(s, 1 << descr->align_shift);
-		}
-
-		return total;
+		return descr->object.sub_struct_size;
 	}
 	default:
 		return -EINVAL;
@@ -531,6 +522,8 @@ static int arr_parse(struct json_obj *obj,
 
 	if (val) {
 		elements = (size_t *)((char *)val + elem_descr->offset);
+	} else {
+		field = (char *)field + elem_descr->offset;
 	}
 
 	__ASSERT_NO_MSG(elem_size > 0);
@@ -548,6 +541,9 @@ static int arr_parse(struct json_obj *obj,
 			return -ENOSPC;
 		}
 
+		/* Calculation "field = (char *)field + elem_descr->offset;"
+		 * can also be performed here
+		 */
 		if (decode_value(obj, elem_descr, &value, field, NULL) < 0) {
 			return -EINVAL;
 		}
