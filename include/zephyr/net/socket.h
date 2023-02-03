@@ -200,6 +200,14 @@ struct zsock_pollfd {
  *  connection ID, otherwise will contain the length of the CID value.
  */
 #define TLS_DTLS_PEER_CID_VALUE 17
+
+/** Option to register a verify callback evaluated during TLS handshake
+ * This option should be set before TLS handshake:
+ * - before zsocket_connect() if client
+ * - before zsocket_accept() is server
+ */
+#define TLS_PEER_VERIFY_CB 18
+
 /** @} */
 
 /* Valid values for TLS_PEER_VERIFY option */
