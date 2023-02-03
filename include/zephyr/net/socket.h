@@ -224,6 +224,7 @@ extern "C" {
  *  connection ID, otherwise will contain the length of the CID value.
  */
 #define TLS_DTLS_PEER_CID_VALUE 17
+
 /** Socket option to configure DTLS socket behavior on connect().
  *  If set, DTLS connect() will execute the handshake with the configured peer.
  *  This is the default behavior.
@@ -232,6 +233,15 @@ extern "C" {
  *  will take place in consecutive send()/recv() call.
  */
 #define TLS_DTLS_HANDSHAKE_ON_CONNECT 18
+
+/** Option to register a verify callback evaluated during TLS handshake
+ * This option should be set before TLS handshake:
+ * - before zsocket_connect() if client
+ * - before zsocket_accept() is server
+ */
+#define TLS_PEER_VERIFY_CB 19
+
+/** @} */
 
 /* Valid values for @ref TLS_PEER_VERIFY option */
 #define TLS_PEER_VERIFY_NONE 0     /**< Peer verification disabled. */
