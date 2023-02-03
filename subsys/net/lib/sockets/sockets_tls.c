@@ -21,6 +21,7 @@ LOG_MODULE_REGISTER(net_sock_tls, CONFIG_NET_SOCKETS_LOG_LEVEL);
 #include <zephyr/random/rand32.h>
 #include <zephyr/syscall_handler.h>
 #include <zephyr/sys/fdtable.h>
+#include <zephyr/net/tls_verify_cb.h>
 
 /* TODO: Remove all direct access to private fields.
  * According with Mbed TLS migration guide:
@@ -219,6 +220,10 @@ __net_socket struct tls_context {
 	/** mbedTLS structure for own private key. */
 	mbedtls_pk_context priv_key;
 #endif /* MBEDTLS_X509_CRT_PARSE_C */
+
+#if defined(CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK)
+	struct tls_verify_cb verify_cb;
+#endif /* CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK */
 
 #endif /* CONFIG_MBEDTLS */
 };
@@ -475,6 +480,11 @@ static struct tls_context *tls_clone(struct tls_context *source_tls)
 
 	target_tls->tls_version = source_tls->tls_version;
 	target_tls->type = source_tls->type;
+
+#if defined(CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK)
+	target_tls->verify_cb.callback = source_tls->verify_cb.callback;
+	target_tls->verify_cb.user_data = source_tls->verify_cb.user_data;
+#endif /* CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK */
 
 	memcpy(&target_tls->options, &source_tls->options,
 	       sizeof(target_tls->options));
@@ -1344,6 +1354,11 @@ static int tls_mbedtls_init(struct tls_context *context, bool is_server)
 					  context->options.verify_level);
 	}
 
+#if defined(CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK)
+	mbedtls_ssl_conf_verify(&context->config, context->verify_cb.callback,
+				context->verify_cb.user_data);
+#endif /* CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK */
+
 	mbedtls_ssl_conf_rng(&context->config,
 			     tls_ctr_drbg_random,
 			     NULL);
@@ -1729,6 +1744,31 @@ static int tls_opt_peer_verify_set(struct tls_context *context,
 
 	return 0;
 }
+
+#if defined(CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK)
+
+static int tls_opt_peer_verify_cb_set(struct tls_context *context, const void *optval,
+				      socklen_t optlen)
+{
+	const struct tls_verify_cb *verify_cb;
+
+	if (!optval) {
+		return -EINVAL;
+	}
+
+	if (optlen != sizeof(struct tls_verify_cb)) {
+		return -EINVAL;
+	}
+
+	verify_cb = (const struct tls_verify_cb *)optval;
+
+	context->verify_cb.callback = verify_cb->callback;
+	context->verify_cb.user_data = verify_cb->user_data;
+
+	return 0;
+}
+
+#endif /* CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK */
 
 static int tls_opt_cert_nocopy_set(struct tls_context *context,
 				   const void *optval, socklen_t optlen)
@@ -3091,6 +3131,12 @@ int ztls_setsockopt_ctx(struct tls_context *ctx, int level, int optname,
 	case TLS_PEER_VERIFY:
 		err = tls_opt_peer_verify_set(ctx, optval, optlen);
 		break;
+
+#if defined(CONFIG_NET_SOCKETS_TLS_PEER_VERIFY_CALLBACK)
+	case TLS_PEER_VERIFY_CB:
+		err = tls_opt_peer_verify_cb_set(ctx, optval, optlen);
+		break;
+#endif
 
 	case TLS_CERT_NOCOPY:
 		err = tls_opt_cert_nocopy_set(ctx, optval, optlen);

@@ -165,6 +165,13 @@ struct zsock_pollfd {
  */
 #define TLS_SESSION_CACHE_PURGE 13
 
+/** Option to register a verify callback evaluated during TLS handshake
+ * This option should be set before TLS handshake:
+ * - before zsocket_connect() if client
+ * - before zsocket_accept() is server
+ */
+#define TLS_PEER_VERIFY_CB 14
+
 /** @} */
 
 /* Valid values for TLS_PEER_VERIFY option */
