@@ -309,9 +309,9 @@ ZTEST(lib_json_test, test_json_encoding_array_array)
 {
 	struct obj_array_array obj_array_array_ts = {
 		.objects_array = {
-			[0] = { { .name = "Sim\303\263n Bol\303\255var", .height = 168 } },
-			[1] = { { .name = "Pel\303\251",                 .height = 173 } },
-			[2] = { { .name = "Usain Bolt",                  .height = 195 } },
+			[0] = { .objects = { .name = "Sim\303\263n Bol\303\255var", .height = 168 } },
+			[1] = { .objects = { .name = "Pel\303\251",                 .height = 173 } },
+			[2] = { .objects = { .name = "Usain Bolt",                  .height = 195 } },
 		},
 		.objects_array_len = 3,
 	};
