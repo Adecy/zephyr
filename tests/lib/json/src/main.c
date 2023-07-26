@@ -9,9 +9,25 @@
 #include <zephyr/ztest.h>
 #include <zephyr/data/json.h>
 
+/* TODO (reword)
+ * Note, within the following tests, it is required to explictely defined
+ * the members of the structures and not using the notation:
+ * { 1, "val", false}
+ * Because some unused members may be added in the future, shifting the
+ * position of the members.
+ */
+
+#define TEST_UNUSED_MEMBER
+
+#if defined(TEST_UNUSED_MEMBER)
+#define __UNUSED_MEMBER(_member) _member
+#else
+#define __UNUSED_MEMBER(_member)
+#endif
+
 struct test_nested {
 	int nested_int;
-	uint32_t _unused_member;
+	__UNUSED_MEMBER(uint32_t _unused_member);
 	bool nested_bool;
 	const char *nested_string;
 };
@@ -20,7 +36,7 @@ struct test_struct {
 	const char *some_string;
 	int some_int;
 	bool some_bool;
-	uint32_t _unused_member;
+	__UNUSED_MEMBER(uint32_t _unused_member);
 	struct test_nested some_nested_struct;
 	int some_array[16];
 	size_t some_array_len;
@@ -33,22 +49,28 @@ struct test_struct {
 	size_t obj_array_len;
 };
 
+// 12 B
 struct elt {
-	uint32_t _unused_member;
+	__UNUSED_MEMBER(uint32_t _unused_member);
+	__UNUSED_MEMBER(uint32_t _unused_member1);
+	__UNUSED_MEMBER(uint32_t _unused_member2);
 	const char *name;
 	int height;
 };
 
+// 
 struct obj_array {
-	uint32_t _unused_member1;
+	__UNUSED_MEMBER(uint32_t _unused_member1);
+	__UNUSED_MEMBER(uint32_t _unused_member2);
 	struct elt elements[10];
-	uint32_t _unused_member2;
+	__UNUSED_MEMBER(uint32_t _unused_member3);
 	size_t num_elements;
+	__UNUSED_MEMBER(uint32_t _unused_member4);
 };
 
 struct test_int_limits {
 	int int_max;
-	uint32_t _unused_member;
+	__UNUSED_MEMBER(uint32_t _unused_member);
 	int int_cero;
 	int int_min;
 };
@@ -97,16 +119,19 @@ static const struct json_obj_descr obj_limits_descr[] = {
 	JSON_OBJ_DESCR_PRIM(struct test_int_limits, int_min, JSON_TOK_NUMBER),
 };
 
+// 28 B
 struct array {
 	uint32_t _unused_member1;
 	uint32_t _unused_member2;
+	uint32_t _unused_member3;
 	struct elt objects;
+	__UNUSED_MEMBER(uint32_t _unused_member4);
 };
 
 struct obj_array_array {
-	uint32_t _unused_member1;
+	__UNUSED_MEMBER(uint32_t _unused_member1);
 	struct array objects_array[4];
-	uint32_t _unused_member2;
+	__UNUSED_MEMBER(uint32_t _unused_member2);
 	size_t objects_array_len;
 };
 
@@ -121,7 +146,9 @@ static const struct json_obj_descr array_array_descr[] = {
 };
 
 struct obj_array_2dim {
+	__UNUSED_MEMBER(uint32_t _unused_member1);
 	struct obj_array objects_array_array[3];
+	__UNUSED_MEMBER(uint32_t _unused_member2);
 	size_t objects_array_array_len;
 };
 
@@ -131,9 +158,12 @@ static const struct json_obj_descr array_2dim_descr[] = {
 				   ARRAY_SIZE(obj_array_descr)),
 };
 
+static char buffer[800u];
+static struct test_struct ts;
+	
 ZTEST(lib_json_test, test_json_encoding)
 {
-	struct test_struct ts = {
+	struct test_struct ts2 = {
 		.some_string = "zephyr 123\uABCD",
 		.some_int = 42,
 		.some_bool = true,
@@ -161,11 +191,12 @@ ZTEST(lib_json_test, test_json_encoding)
 			.nested_string = "no escape necessary",
 		},
 		.nested_obj_array = {
-			{1, true, "true"},
-			{0, false, "false"}
+			{.nested_int = 1, .nested_bool = true, .nested_string = "true"},
+			{.nested_int = 0, .nested_bool = false, .nested_string = "false"}
 		},
 		.obj_array_len = 2
 	};
+	memcpy(&ts, &ts2, sizeof(ts));
 	char encoded[] = "{\"some_string\":\"zephyr 123\uABCD\","
 		"\"some_int\":42,\"some_bool\":true,"
 		"\"some_nested_struct\":{\"nested_int\":-1234,"
@@ -182,7 +213,6 @@ ZTEST(lib_json_test, test_json_encoding)
 		"{\"nested_int\":1,\"nested_bool\":true,\"nested_string\":\"true\"},"
 		"{\"nested_int\":0,\"nested_bool\":false,\"nested_string\":\"false\"}]"
 		"}";
-	char buffer[sizeof(encoded)];
 	int ret;
 	ssize_t len;
 
@@ -197,9 +227,10 @@ ZTEST(lib_json_test, test_json_encoding)
 	zassert_equal(ret, 0, "Encoded contents not consistent");
 }
 
+static struct test_struct ts;
+
 ZTEST(lib_json_test, test_json_decoding)
 {
-	struct test_struct ts;
 	char encoded[] = "{\"some_string\":\"zephyr 123\\uABCD456\","
 		"\"some_int\":\t42\n,"
 		"\"some_bool\":true    \t  "
@@ -330,10 +361,11 @@ ZTEST(lib_json_test, test_json_encoding_array_array)
 		     "Encoded array of objects is not consistent");
 }
 
+static struct obj_array_array obj_array_array_ts;
+
 ZTEST(lib_json_test, test_json_decoding_array_array)
 {
 	int ret;
-	struct obj_array_array obj_array_array_ts;
 	char encoded[] = "{\"objects_array\":["
 			  "{\"height\":168,\"name\":\"Sim\303\263n Bol\303\255var\"},"
 			  "{\"height\":173,\"name\":\"Pel\303\251\"},"
@@ -404,10 +436,11 @@ ZTEST(lib_json_test, test_json_obj_arr_encoding)
 		     "Encoded array of objects is not consistent");
 }
 
+static struct obj_array obj_array_array_ts_0;
+
 ZTEST(lib_json_test, test_json_arr_obj_decoding)
 {
 	int ret;
-	struct obj_array obj_array_array_ts;
 	char encoded[] = "[{\"height\":168,\"name\":\"Sim\303\263n Bol\303\255var\"},"
 					"{\"height\":173,\"name\":\"Pel\303\251\"},"
 					"{\"height\":195,\"name\":\"Usain Bolt\"}"
@@ -415,25 +448,25 @@ ZTEST(lib_json_test, test_json_arr_obj_decoding)
 
 	ret = json_arr_parse(encoded, sizeof(encoded),
 			     obj_array_descr,
-			     &obj_array_array_ts);
+			     &obj_array_array_ts_0);
 
 	zassert_equal(ret, 0, "Encoding array of objects returned error %d", ret);
-	zassert_equal(obj_array_array_ts.num_elements, 3,
+	zassert_equal(obj_array_array_ts_0.num_elements, 3,
 		      "Array doesn't have correct number of items");
 
-	zassert_true(!strcmp(obj_array_array_ts.elements[0].name,
+	zassert_true(!strcmp(obj_array_array_ts_0.elements[0].name,
 			 "Sim\303\263n Bol\303\255var"), "String not decoded correctly");
-	zassert_equal(obj_array_array_ts.elements[0].height, 168,
+	zassert_equal(obj_array_array_ts_0.elements[0].height, 168,
 		      "Sim\303\263n Bol\303\255var height not decoded correctly");
 
-	zassert_true(!strcmp(obj_array_array_ts.elements[1].name,
+	zassert_true(!strcmp(obj_array_array_ts_0.elements[1].name,
 			 "Pel\303\251"), "String not decoded correctly");
-	zassert_equal(obj_array_array_ts.elements[1].height, 173,
+	zassert_equal(obj_array_array_ts_0.elements[1].height, 173,
 		      "Pel\303\251 height not decoded correctly");
 
-	zassert_true(!strcmp(obj_array_array_ts.elements[2].name,
+	zassert_true(!strcmp(obj_array_array_ts_0.elements[2].name,
 			 "Usain Bolt"), "String not decoded correctly");
-	zassert_equal(obj_array_array_ts.elements[2].height, 195,
+	zassert_equal(obj_array_array_ts_0.elements[2].height, 195,
 		      "Usain Bolt height not decoded correctly");
 }
 
@@ -529,9 +562,7 @@ ZTEST(lib_json_test, test_json_obj_arr_decoding)
 	}
 }
 
-ZTEST(lib_json_test, test_json_2dim_arr_obj_encoding)
-{
-	struct obj_array_2dim obj_array_array_ts = {
+struct obj_array_2dim oaat = {
 		.objects_array_array = {
 			[0] = {
 				.elements = {
@@ -587,6 +618,10 @@ ZTEST(lib_json_test, test_json_2dim_arr_obj_encoding)
 		},
 		.objects_array_array_len = 3,
 	};
+
+ZTEST(lib_json_test, test_json_2dim_arr_obj_encoding)
+{
+	memset(buffer, 0, sizeof(buffer));
 	char encoded[] = "{\"objects_array_array\":["
 		"[{\"name\":\"Sim\303\263n Bol\303\255var\",\"height\":168},"
 		 "{\"name\":\"Pel\303\251\",\"height\":173},"
@@ -598,19 +633,20 @@ ZTEST(lib_json_test, test_json_2dim_arr_obj_encoding)
 		 "{\"name\":\"Daila Ojeda\",\"height\":158},"
 		 "{\"name\":\"Albert Einstein\",\"height\":172}]"
 		"]}";
-	char buffer[sizeof(encoded)];
 	int ret;
 
 	ret = json_obj_encode_buf(array_2dim_descr, ARRAY_SIZE(array_2dim_descr),
-				  &obj_array_array_ts, buffer, sizeof(buffer));
+				  &oaat, buffer, sizeof(buffer));
 	zassert_equal(ret, 0, "Encoding two-dimensional array returned error");
 	zassert_true(!strcmp(buffer, encoded),
 		     "Encoded two-dimensional array is not consistent");
 }
 
+static struct obj_array_2dim oaa;
+static struct obj_array_2dim oaa_expected;
+
 ZTEST(lib_json_test, test_json_2dim_obj_arr_decoding)
 {
-	struct obj_array_2dim oaa;
 	char encoded[] = "{\"objects_array_array\":["
 		"[{\"name\":\"Sim\303\263n Bol\303\255var\",\"height\":168},"
 		 "{\"name\":\"Pel\303\251\",\"height\":173},"
@@ -678,6 +714,7 @@ ZTEST(lib_json_test, test_json_2dim_obj_arr_decoding)
 		},
 		.objects_array_array_len = 3,
 	};
+	memcpy(&oaa_expected, &expected, sizeof(expected));
 	int ret;
 
 	ret = json_obj_parse(encoded, sizeof(encoded),

@@ -1,0 +1,288 @@
+2c2,18
+< [0/1] To exit from QEMU enter: 'CTRL+a, x'[QEMU] CPU: qemu32,+nx,+pae
+---
+> [1/14] Building C object CMakeFiles/app.dir/src/main.c.obj
+> [2/14] Linking C static library app/libapp.a
+> [3/14] Linking C executable zephyr/zephyr_pre0.elf
+> [4/14] Generating linker.cmd
+> [5/14] Generating gdt.bin
+> [6/14] Generating gdt.o
+> [7/14] Generating irq_int_vector_map.bin, staticIdt.bin, irq_vectors_alloc.bin
+> [8/14] Generating staticIdt.o
+> [9/14] Generating irq_int_vector_map.o
+> [10/14] Generating irq_vectors_alloc.o
+> [11/14] Generating pagetables.bin
+> [12/14] Generating pagetables.o
+> [13/14] Linking C executable zephyr/zephyr.elf
+> Memory region         Used Size  Region Size  %age Used
+>              RAM:      127008 B         3 MB      4.04%
+>         IDT_LIST:          0 GB         2 KB      0.00%
+> [13/14] To exit from QEMU enter: 'CTRL+a, x'[QEMU] CPU: qemu32,+nx,+pae
+79,119c95,135
+< 	obj_parse [0x10acc0:10] v: 0x1134fc s: "some_string":"zephyr 123\uABCD.O
+< 	decode_value [0x10acc0 t: '"'] f: 0x1134fc v: 0x1134fc s: ,"some_int":.42.,"some_bool":tr.O
+< 	decode_value [0x10acd4 t: '0'] f: 0x113500 v: 0x1134fc s: .,"some_bool":true    .  ..   ,.O
+< 	decode_value [0x10ace8 t: 't'] f: 0x113504 v: 0x1134fc s:     .  ..   ,"some_nested_struc.O
+< 	decode_value [0x10acfc t: '{'] f: 0x113508 v: 0x1134fc s:     "nested_int":-1234,.."neste.O
+< 	obj_parse [0x10ada0:3] v: 0x113508 s:     "nested_int":-1234,.."neste.O
+< 	decode_value [0x10ada0 t: '0'] f: 0x113508 v: 0x113508 s: ,.."nested_bool":false,."nested.O
+< 	decode_value [0x10adb4 t: 't'] f: 0x11350c v: 0x113508 s: ,."nested_string":"this should .O
+< 	decode_value [0x10adc8 t: '"'] f: 0x113510 v: 0x113508 s: },"some_array":[11,22, 33,.45,..O
+< 	decode_value [0x10ad10 t: '['] f: 0x113514 v: 0x1134fc s: 11,22, 33,.45,.299]"another_b!@.O
+< 	arr_parse [0x10af3c] f: 0x113514 (max e: 16) v: 0x1134fc s: 11,22, 33,.45,.299]"another_b!@.O
+< 	decode_value [0x10af3c t: '0'] f: 0x113514 v: 0x1134fc s: ,22, 33,.45,.299]"another_b!@l".O
+< 	decode_value [0x10af3c t: '0'] f: 0x113518 v: 0x1134fc s: , 33,.45,.299]"another_b!@l":tr.O
+< 	decode_value [0x10af3c t: '0'] f: 0x11351c v: 0x1134fc s: ,.45,.299]"another_b!@l":true,".O
+< 	decode_value [0x10af3c t: '0'] f: 0x113520 v: 0x1134fc s: ,.299]"another_b!@l":true,"if":.O
+< 	decode_value [0x10af3c t: '0'] f: 0x113524 v: 0x1134fc s: ]"another_b!@l":true,"if":false.O
+< 	decode_value [0x10ad24 t: 't'] f: 0x113558 v: 0x1134fc s: ,"if":false,"another-array":[2,.O
+< 	decode_value [0x10ad38 t: 't'] f: 0x113559 v: 0x1134fc s: ,"another-array":[2,3,5,7],"4no.O
+< 	decode_value [0x10ad4c t: '['] f: 0x11355c v: 0x1134fc s: 2,3,5,7],"4nother_ne$+":{"neste.O
+< 	arr_parse [0x10af28] f: 0x11355c (max e: 10) v: 0x1134fc s: 2,3,5,7],"4nother_ne$+":{"neste.O
+< 	decode_value [0x10af28 t: '0'] f: 0x11355c v: 0x1134fc s: ,3,5,7],"4nother_ne$+":{"nested.O
+< 	decode_value [0x10af28 t: '0'] f: 0x113560 v: 0x1134fc s: ,5,7],"4nother_ne$+":{"nested_i.O
+< 	decode_value [0x10af28 t: '0'] f: 0x113564 v: 0x1134fc s: ,7],"4nother_ne$+":{"nested_int.O
+< 	decode_value [0x10af28 t: '0'] f: 0x113568 v: 0x1134fc s: ],"4nother_ne$+":{"nested_int":.O
+< 	decode_value [0x10ad60 t: '{'] f: 0x113588 v: 0x1134fc s: "nested_int":1234,"nested_bool".O
+< 	obj_parse [0x10ada0:3] v: 0x113588 s: "nested_int":1234,"nested_bool".O
+< 	decode_value [0x10ada0 t: '0'] f: 0x113588 v: 0x113588 s: ,"nested_bool":true,"nested_str.O
+< 	decode_value [0x10adb4 t: 't'] f: 0x11358c v: 0x113588 s: ,"nested_string":"no escape nec.O
+< 	decode_value [0x10adc8 t: '"'] f: 0x113590 v: 0x113588 s: },"nested_obj_array":[{"nested_.O
+< 	decode_value [0x10ad74 t: '['] f: 0x113594 v: 0x1134fc s: {"nested_int":1,"nested_bool":t.O
+< 	arr_parse [0x10af14] f: 0x113594 (max e: 2) v: 0x1134fc s: {"nested_int":1,"nested_bool":t.O
+< 	decode_value [0x10af14 t: '{'] f: 0x113594 v: 0x1134fc s: "nested_int":1,"nested_bool":tr.O
+< 	obj_parse [0x10ada0:3] v: 0x113594 s: "nested_int":1,"nested_bool":tr.O
+< 	decode_value [0x10ada0 t: '0'] f: 0x113594 v: 0x113594 s: ,"nested_bool":true,"nested_str.O
+< 	decode_value [0x10adb4 t: 't'] f: 0x113598 v: 0x113594 s: ,"nested_string":"true"},{"nest.O
+< 	decode_value [0x10adc8 t: '"'] f: 0x11359c v: 0x113594 s: },{"nested_int":0,"nested_bool".O
+< 	decode_value [0x10af14 t: '{'] f: 0x1135a0 v: 0x1134fc s: "nested_int":0,"nested_bool":fa.O
+< 	obj_parse [0x10ada0:3] v: 0x1135a0 s: "nested_int":0,"nested_bool":fa.O
+< 	decode_value [0x10ada0 t: '0'] f: 0x1135a0 v: 0x1135a0 s: ,"nested_bool":false,"nested_st.O
+< 	decode_value [0x10adb4 t: 't'] f: 0x1135a4 v: 0x1135a0 s: ,"nested_string":"false"}]}.....O
+< 	decode_value [0x10adc8 t: '"'] f: 0x1135a8 v: 0x1135a0 s: }]}.............................O
+---
+> 	obj_parse [0x10acc0:10] v: 0x1134ec s: "some_string":"zephyr 123\uABCD.O
+> 	decode_value [0x10acc0 t: '"'] f: 0x1134ec v: 0x1134ec s: ,"some_int":.42.,"some_bool":tr.O
+> 	decode_value [0x10acd4 t: '0'] f: 0x1134f0 v: 0x1134ec s: .,"some_bool":true    .  ..   ,.O
+> 	decode_value [0x10ace8 t: 't'] f: 0x1134f4 v: 0x1134ec s:     .  ..   ,"some_nested_struc.O
+> 	decode_value [0x10acfc t: '{'] f: 0x1134f8 v: 0x1134ec s:     "nested_int":-1234,.."neste.O
+> 	obj_parse [0x10ada0:3] v: 0x1134f8 s:     "nested_int":-1234,.."neste.O
+> 	decode_value [0x10ada0 t: '0'] f: 0x1134f8 v: 0x1134f8 s: ,.."nested_bool":false,."nested.O
+> 	decode_value [0x10adb4 t: 't'] f: 0x113500 v: 0x1134f8 s: ,."nested_string":"this should .O
+> 	decode_value [0x10adc8 t: '"'] f: 0x113504 v: 0x1134f8 s: },"some_array":[11,22, 33,.45,..O
+> 	decode_value [0x10ad10 t: '['] f: 0x113508 v: 0x1134ec s: 11,22, 33,.45,.299]"another_b!@.O
+> 	arr_parse [0x10af3c] f: 0x113508 (max e: 16) v: 0x1134ec s: 11,22, 33,.45,.299]"another_b!@.O
+> 	decode_value [0x10af3c t: '0'] f: 0x113508 v: 0x1134ec s: ,22, 33,.45,.299]"another_b!@l".O
+> 	decode_value [0x10af3c t: '0'] f: 0x11350c v: 0x1134ec s: , 33,.45,.299]"another_b!@l":tr.O
+> 	decode_value [0x10af3c t: '0'] f: 0x113510 v: 0x1134ec s: ,.45,.299]"another_b!@l":true,".O
+> 	decode_value [0x10af3c t: '0'] f: 0x113514 v: 0x1134ec s: ,.299]"another_b!@l":true,"if":.O
+> 	decode_value [0x10af3c t: '0'] f: 0x113518 v: 0x1134ec s: ]"another_b!@l":true,"if":false.O
+> 	decode_value [0x10ad24 t: 't'] f: 0x11354c v: 0x1134ec s: ,"if":false,"another-array":[2,.O
+> 	decode_value [0x10ad38 t: 't'] f: 0x11354d v: 0x1134ec s: ,"another-array":[2,3,5,7],"4no.O
+> 	decode_value [0x10ad4c t: '['] f: 0x113550 v: 0x1134ec s: 2,3,5,7],"4nother_ne$+":{"neste.O
+> 	arr_parse [0x10af28] f: 0x113550 (max e: 10) v: 0x1134ec s: 2,3,5,7],"4nother_ne$+":{"neste.O
+> 	decode_value [0x10af28 t: '0'] f: 0x113550 v: 0x1134ec s: ,3,5,7],"4nother_ne$+":{"nested.O
+> 	decode_value [0x10af28 t: '0'] f: 0x113554 v: 0x1134ec s: ,5,7],"4nother_ne$+":{"nested_i.O
+> 	decode_value [0x10af28 t: '0'] f: 0x113558 v: 0x1134ec s: ,7],"4nother_ne$+":{"nested_int.O
+> 	decode_value [0x10af28 t: '0'] f: 0x11355c v: 0x1134ec s: ],"4nother_ne$+":{"nested_int":.O
+> 	decode_value [0x10ad60 t: '{'] f: 0x11357c v: 0x1134ec s: "nested_int":1234,"nested_bool".O
+> 	obj_parse [0x10ada0:3] v: 0x11357c s: "nested_int":1234,"nested_bool".O
+> 	decode_value [0x10ada0 t: '0'] f: 0x11357c v: 0x11357c s: ,"nested_bool":true,"nested_str.O
+> 	decode_value [0x10adb4 t: 't'] f: 0x113584 v: 0x11357c s: ,"nested_string":"no escape nec.O
+> 	decode_value [0x10adc8 t: '"'] f: 0x113588 v: 0x11357c s: },"nested_obj_array":[{"nested_.O
+> 	decode_value [0x10ad74 t: '['] f: 0x11358c v: 0x1134ec s: {"nested_int":1,"nested_bool":t.O
+> 	arr_parse [0x10af14] f: 0x11358c (max e: 2) v: 0x1134ec s: {"nested_int":1,"nested_bool":t.O
+> 	decode_value [0x10af14 t: '{'] f: 0x11358c v: 0x1134ec s: "nested_int":1,"nested_bool":tr.O
+> 	obj_parse [0x10ada0:3] v: 0x11358c s: "nested_int":1,"nested_bool":tr.O
+> 	decode_value [0x10ada0 t: '0'] f: 0x11358c v: 0x11358c s: ,"nested_bool":true,"nested_str.O
+> 	decode_value [0x10adb4 t: 't'] f: 0x113594 v: 0x11358c s: ,"nested_string":"true"},{"nest.O
+> 	decode_value [0x10adc8 t: '"'] f: 0x113598 v: 0x11358c s: },{"nested_int":0,"nested_bool".O
+> 	decode_value [0x10af14 t: '{'] f: 0x11359c v: 0x1134ec s: "nested_int":0,"nested_bool":fa.O
+> 	obj_parse [0x10ada0:3] v: 0x11359c s: "nested_int":0,"nested_bool":fa.O
+> 	decode_value [0x10ada0 t: '0'] f: 0x11359c v: 0x11359c s: ,"nested_bool":false,"nested_st.O
+> 	decode_value [0x10adb4 t: 't'] f: 0x1135a4 v: 0x11359c s: ,"nested_string":"false"}]}.....O
+> 	decode_value [0x10adc8 t: '"'] f: 0x1135a8 v: 0x11359c s: }]}.............................O
+144,302c160,182
+<  PASS - test_json_encoding in 0.003 seconds
+< ===================================================================
+< START - test_json_encoding_array_array
+<  PASS - test_json_encoding_array_array in 0.001 seconds
+< ===================================================================
+< START - test_json_escape
+<  PASS - test_json_escape in 0.001 seconds
+< ===================================================================
+< START - test_json_escape_bounds_check
+<  PASS - test_json_escape_bounds_check in 0.001 seconds
+< ===================================================================
+< START - test_json_escape_empty
+<  PASS - test_json_escape_empty in 0.001 seconds
+< ===================================================================
+< START - test_json_escape_no_op
+<  PASS - test_json_escape_no_op in 0.001 seconds
+< ===================================================================
+< START - test_json_escape_one
+<  PASS - test_json_escape_one in 0.001 seconds
+< ===================================================================
+< START - test_json_invalid_bool
+< 	obj_parse [0x10acc0:10] v: 0x1136e8 s: "some_bool":truffle }...........O
+< 	obj_parse [0x10acc0:10] v: 0x1136e8 s: "some_bool":fallacy }...........O
+<  PASS - test_json_invalid_bool in 0.001 seconds
+< ===================================================================
+< START - test_json_invalid_null
+< 	obj_parse [0x10acc0:10] v: 0x1136e8 s: "some_string":null }............O
+< 	obj_parse [0x10acc0:10] v: 0x1136e8 s: "some_string":nutella }.........O
+<  PASS - test_json_invalid_null in 0.001 seconds
+< ===================================================================
+< START - test_json_invalid_number
+< 	obj_parse [0x10acc0:10] v: 0x1136f8 s: "some_int":xxx }................O
+<  PASS - test_json_invalid_number in 0.001 seconds
+< ===================================================================
+< START - test_json_invalid_string
+< 	obj_parse [0x10acc0:10] v: 0x1136d0 s: "some_string":"\u@@@@"}.........O
+< 	obj_parse [0x10acc0:10] v: 0x1136d0 s: "some_string":"\uA@@@"}.........O
+< 	obj_parse [0x10acc0:10] v: 0x1136d0 s: "some_string":"\uAB@@"}.........O
+< 	obj_parse [0x10acc0:10] v: 0x1136d0 s: "some_string":"\uABC@"}.........O
+< 	obj_parse [0x10acc0:10] v: 0x1136d0 s: "some_string":"\X"}.............O
+<  PASS - test_json_invalid_string in 0.003 seconds
+< ===================================================================
+< START - test_json_item_wrong_type
+< 	obj_parse [0x10acc0:10] v: 0x113708 s: "some_string":false}............O
+<  PASS - test_json_item_wrong_type in 0.001 seconds
+< ===================================================================
+< START - test_json_key_not_in_descr
+< 	obj_parse [0x10acc0:10] v: 0x113708 s: "key_not_in_descr":123456}......O
+<  PASS - test_json_key_not_in_descr in 0.001 seconds
+< ===================================================================
+< START - test_json_limits
+< 	obj_parse [0x10ac40:3] v: 0x113738 s: "int_max":2147483647,"int_cero".O
+< 	decode_value [0x10ac40 t: '0'] f: 0x113738 v: 0x113738 s: ,"int_cero":0,"int_min":-214748.O
+< 	decode_value [0x10ac54 t: '0'] f: 0x11373c v: 0x113738 s: ,"int_min":-2147483648}.........O
+< 	decode_value [0x10ac68 t: '0'] f: 0x113740 v: 0x113738 s: }...............................O
+<  PASS - test_json_limits in 0.003 seconds
+< ===================================================================
+< START - test_json_missing_quote
+< 	obj_parse [0x10acc0:10] v: 0x113708 s: "some_string....................O
+<  PASS - test_json_missing_quote in 0.001 seconds
+< ===================================================================
+< START - test_json_obj_arr_decoding
+< 	obj_parse [0x10aeec:1] v: 0x11358c s: "elements":[{"name":"Sim..n Bol.O
+< 	decode_value [0x10aeec t: '['] f: 0x11358c v: 0x11358c s: {"name":"Sim..n Bol..var","heig.O
+< 	arr_parse [0x10af00] f: 0x11358c (max e: 10) v: 0x11358c s: {"name":"Sim..n Bol..var","heig.O
+< 	decode_value [0x10af00 t: '{'] f: 0x11358c v: 0x11358c s: "name":"Sim..n Bol..var","heigh.O
+< 	obj_parse [0x10ac80:2] v: 0x11358c s: "name":"Sim..n Bol..var","heigh.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x11358c v: 0x11358c s: ,"height":168},{"name":"Muggsy .O
+< 	decode_value [0x10ac94 t: '0'] f: 0x113590 v: 0x11358c s: },{"name":"Muggsy Bogues","heig.O
+< 	decode_value [0x10af00 t: '{'] f: 0x113594 v: 0x11358c s: "name":"Muggsy Bogues","height".O
+< 	obj_parse [0x10ac80:2] v: 0x113594 s: "name":"Muggsy Bogues","height".O
+< 	decode_value [0x10ac80 t: '"'] f: 0x113594 v: 0x113594 s: ,"height":160},{"name":"Pel..",.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x113598 v: 0x113594 s: },{"name":"Pel..","height":173}.O
+< 	decode_value [0x10af00 t: '{'] f: 0x11359c v: 0x11358c s: "name":"Pel..","height":173},{".O
+< 	obj_parse [0x10ac80:2] v: 0x11359c s: "name":"Pel..","height":173},{".O
+< 	decode_value [0x10ac80 t: '"'] f: 0x11359c v: 0x11359c s: ,"height":173},{"name":"Hakeem .O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135a0 v: 0x11359c s: },{"name":"Hakeem Olajuwon","he.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135a4 v: 0x11358c s: "name":"Hakeem Olajuwon","heigh.O
+< 	obj_parse [0x10ac80:2] v: 0x1135a4 s: "name":"Hakeem Olajuwon","heigh.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135a4 v: 0x1135a4 s: ,"height":213},{"name":"Alex Ho.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135a8 v: 0x1135a4 s: },{"name":"Alex Honnold","heigh.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135ac v: 0x11358c s: "name":"Alex Honnold","height":.O
+< 	obj_parse [0x10ac80:2] v: 0x1135ac s: "name":"Alex Honnold","height":.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135ac v: 0x1135ac s: ,"height":180},{"name":"Hazel F.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135b0 v: 0x1135ac s: },{"name":"Hazel Findlay","heig.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135b4 v: 0x11358c s: "name":"Hazel Findlay","height".O
+< 	obj_parse [0x10ac80:2] v: 0x1135b4 s: "name":"Hazel Findlay","height".O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135b4 v: 0x1135b4 s: ,"height":157},{"name":"Daila O.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135b8 v: 0x1135b4 s: },{"name":"Daila Ojeda","height.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135bc v: 0x11358c s: "name":"Daila Ojeda","height":1.O
+< 	obj_parse [0x10ac80:2] v: 0x1135bc s: "name":"Daila Ojeda","height":1.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135bc v: 0x1135bc s: ,"height":158},{"name":"Albert .O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135c0 v: 0x1135bc s: },{"name":"Albert Einstein","he.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135c4 v: 0x11358c s: "name":"Albert Einstein","heigh.O
+< 	obj_parse [0x10ac80:2] v: 0x1135c4 s: "name":"Albert Einstein","heigh.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135c4 v: 0x1135c4 s: ,"height":172},{"name":"Usain B.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135c8 v: 0x1135c4 s: },{"name":"Usain Bolt","height".O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135cc v: 0x11358c s: "name":"Usain Bolt","height":19.O
+< 	obj_parse [0x10ac80:2] v: 0x1135cc s: "name":"Usain Bolt","height":19.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135cc v: 0x1135cc s: ,"height":195},{"name":"Paavo N.O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135d0 v: 0x1135cc s: },{"name":"Paavo Nurmi","height.O
+< 	decode_value [0x10af00 t: '{'] f: 0x1135d4 v: 0x11358c s: "name":"Paavo Nurmi","height":1.O
+< 	obj_parse [0x10ac80:2] v: 0x1135d4 s: "name":"Paavo Nurmi","height":1.O
+< 	decode_value [0x10ac80 t: '"'] f: 0x1135d4 v: 0x1135d4 s: ,"height":174}]}................O
+< 	decode_value [0x10ac94 t: '0'] f: 0x1135d8 v: 0x1135d4 s: }]}.............................O
+<  PASS - test_json_obj_arr_decoding in 0.024 seconds
+< ===================================================================
+< START - test_json_obj_arr_encoding
+<  PASS - test_json_obj_arr_encoding in 0.002 seconds
+< ===================================================================
+< START - test_json_wrong_token
+< 	obj_parse [0x10acc0:10] v: 0x113708 s: "some_string",}.................O
+<  PASS - test_json_wrong_token in 0.001 seconds
+< ===================================================================
+< START - test_large_descriptor
+< 	obj_parse [0x10a460:40] v: 0x11371c s: "int1": 1,"int21": 21,"int31": .O
+< 	decode_value [0x10a474 t: '0'] f: 0x113720 v: 0x11371c s: ,"int21": 21,"int31": 31,"int39.O
+< 	decode_value [0x10a604 t: '0'] f: 0x113770 v: 0x11371c s: ,"int31": 31,"int39": 39}.......O
+< 	decode_value [0x10a6cc t: '0'] f: 0x113798 v: 0x11371c s: ,"int39": 39}...................O
+< 	decode_value [0x10a76c t: '0'] f: 0x1137b8 v: 0x11371c s: }...............................O
+<  PASS - test_large_descriptor in 0.003 seconds
+< ===================================================================
+< TESTSUITE lib_json_test succeeded
+< 
+< ------ TESTSUITE SUMMARY START ------
+< 
+< SUITE PASS - 100.00% [lib_json_test]: pass = 26, fail = 0, skip = 0, total = 26 duration = 0.122 seconds
+<  - PASS - [lib_json_test.test_json_2dim_arr_obj_encoding] duration = 0.002 seconds
+<  - PASS - [lib_json_test.test_json_2dim_obj_arr_decoding] duration = 0.025 seconds
+<  - PASS - [lib_json_test.test_json_arr_obj_decoding] duration = 0.008 seconds
+<  - PASS - [lib_json_test.test_json_arr_obj_encoding] duration = 0.002 seconds
+<  - PASS - [lib_json_test.test_json_decoding] duration = 0.024 seconds
+<  - PASS - [lib_json_test.test_json_decoding_array_array] duration = 0.009 seconds
+<  - PASS - [lib_json_test.test_json_encode_bounds_check] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_encoding] duration = 0.003 seconds
+<  - PASS - [lib_json_test.test_json_encoding_array_array] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_escape] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_escape_bounds_check] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_escape_empty] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_escape_no_op] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_escape_one] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_invalid_bool] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_invalid_null] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_invalid_number] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_invalid_string] duration = 0.003 seconds
+<  - PASS - [lib_json_test.test_json_item_wrong_type] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_key_not_in_descr] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_limits] duration = 0.003 seconds
+<  - PASS - [lib_json_test.test_json_missing_quote] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_json_obj_arr_decoding] duration = 0.024 seconds
+<  - PASS - [lib_json_test.test_json_obj_arr_encoding] duration = 0.002 seconds
+<  - PASS - [lib_json_test.test_json_wrong_token] duration = 0.001 seconds
+<  - PASS - [lib_json_test.test_large_descriptor] duration = 0.003 seconds
+< 
+< ------ TESTSUITE SUMMARY END ------
+< 
+< ===================================================================
+< PROJECT EXECUTION SUCCESSFUL
+< ninja: build stopped: interrupted by user.
+---
+> E: Page fault at address (nil) (error code 0x0)
+> E: Linear address not present in page tables
+> E: Access violation: supervisor thread not allowed to read
+> E: PTE: not present
+> E: EAX: 0x00000000, EBX: 0x00103cb6, ECX: 0x0011330c, EDX: 0x00000001
+> E: ESI: 0x0011330c, EDI: 0x00000000, EBP: 0x00113224, ESP: 0x00113214
+> E: EFLAGS: 0x00000246 CS: 0x0008 CR3: 0x0011f000
+> E: call trace:
+> E: EIP: 0x00103d6a
+> E:      0x001044f1 (0x11330c)
+> E:      0x001045e5 (0x10ada0)
+> E:      0x001046b8 (0x11330c)
+> E:      0x001045d0 (0x103cb6)
+> E:      0x001044f1 (0x11330c)
+> E:      0x001047a4 (0x10acc0)
+> E:      0x00101fc6 (0x10acc0)
+> E:      0x00105b5a (0x0)
+> E: >>> ZEPHYR FATAL ERROR 0: CPU exception on CPU 0
+> E: Current thread: 0x1100a0 (test_json_encoding)
+> E: Halting system
+> FAILED: zephyr/CMakeFiles/run_qemu /home/lucas/zephyrproject/zephyr/tests/lib/json/build/zephyr/CMakeFiles/run_qemu 
+> cd /home/lucas/zephyrproject/zephyr/tests/lib/json/build && /home/lucas/zephyr-sdk-0.16.1/sysroots/x86_64-pokysdk-linux/usr/bin/qemu-system-i386 -m 4 -cpu qemu32,+nx,+pae -machine q35 -device isa-debug-exit,iobase=0xf4,iosize=0x04 -no-reboot -nographic -no-acpi -net none -pidfile qemu.pid -chardev stdio,id=con,mux=on -serial chardev:con -mon chardev=con,mode=readline -icount shift=5,align=off,sleep=off -rtc clock=vm -kernel /home/lucas/zephyrproject/zephyr/tests/lib/json/build/zephyr/zephyr.elf
+> ninja: build stopped: subcommand failed.

@@ -447,21 +447,82 @@ static int arr_parse(struct json_obj *obj,
 
 static int arr_data_parse(struct json_obj *obj, struct json_obj_token *val);
 
+static inline bool is_ascii(uint8_t data)
+{
+	return (data >= 0x30 && data <= 0x39) || (data >= 0x61 && data <= 0x66) ||
+	       (data >= 0x41 && data <= 0x46);
+}
+
+static inline bool is_printable(char data)
+{
+	return data >= 0x20 && data <= 0x7E;
+}
+
+static inline const char *encode_obj_lex_start(struct json_obj *obj)
+{
+	static char _buf[32u];
+	strncpy(_buf, obj->lex.start, sizeof(_buf));
+	_buf[sizeof(_buf) - 1] = '\0';
+	
+	// transform non-ascii to '.
+	for (int i = 0; i < strlen(_buf); i++) {
+		if (!is_printable(_buf[i])) {
+			_buf[i] = '-';
+		}
+	}
+
+	return _buf;
+}
+
 static int64_t decode_value(struct json_obj *obj,
 			    const struct json_obj_descr *descr,
 			    struct json_token *value, void *field, void *val)
 {
+	const struct json_obj_descr *sub_descr;
 
 	if (!equivalent_types(value->type, descr->type)) {
 		return -EINVAL;
 	}
 
+	printk("\tdecode_value [%s:%s %p t: '%c' o: %u s: %u] f: %p v: %p s: %s\n",
+	       descr->struct_name ? descr->struct_name : "",
+	       descr->field_name ? descr->field_name : "", descr, descr->type, descr->offset,
+	       descr->struct_size, field, val, encode_obj_lex_start(obj));
+
 	switch (descr->type) {
 	case JSON_TOK_OBJECT_START:
+		sub_descr = descr->object.sub_descr;
+		printk("\t\tdecode_value obj sub_descr [%s:%s %p t: '%c' o: %u s: %u]\n",
+		       sub_descr->struct_name ? sub_descr->struct_name : "",
+		       descr->field_name ? descr->field_name : "", sub_descr, sub_descr->type, 
+		       sub_descr->offset, descr->struct_size);
+
+		// field = (char*)field + descr->offset;
+		
 		return obj_parse(obj, descr->object.sub_descr,
 				 descr->object.sub_descr_len,
 				 field);
 	case JSON_TOK_ARRAY_START:
+		sub_descr = descr->array.element_descr;
+		printk("\t\tdecode_value arr sub_descr [%s:%s %p t: '%c' o: %u s: %u]\n",
+		       sub_descr->struct_name ? sub_descr->struct_name : "",
+		       descr->field_name ? descr->field_name : "", sub_descr, sub_descr->type,
+		       sub_descr->offset, descr->struct_size);
+
+		/* For nested arrays, update value to current field,
+		 * so it matches descriptor's offset to length field
+		 */
+		if (val == NULL)
+		{
+			val = field;
+
+			if (descr->array.element_descr->type == JSON_TOK_OBJECT_START) {
+				printk("\t\t\t JSON_TOK_OBJECT_START field %p -> %p (+%u)", field,
+					(char *)field + descr->offset, descr->offset);
+				field = (char*)field + descr->offset;
+			}
+		}
+
 		return arr_parse(obj, descr->array.element_descr,
 				 descr->array.n_elements, field, val);
 	case JSON_TOK_OBJ_ARRAY: {
@@ -507,24 +568,39 @@ static int64_t decode_value(struct json_obj *obj,
 
 static ptrdiff_t get_elem_size(const struct json_obj_descr *descr)
 {
+	ptrdiff_t size = -EINVAL;
+
 	switch (descr->type) {
 	case JSON_TOK_NUMBER:
-		return sizeof(int32_t);
+		size = sizeof(int32_t);
+		break;
 	case JSON_TOK_OPAQUE:
 	case JSON_TOK_FLOAT:
 	case JSON_TOK_OBJ_ARRAY:
-		return sizeof(struct json_obj_token);
+		size = sizeof(struct json_obj_token);
+		break;
 	case JSON_TOK_STRING:
-		return sizeof(char *);
+		size = sizeof(char *);
+		break;
 	case JSON_TOK_TRUE:
 	case JSON_TOK_FALSE:
-		return sizeof(bool);
+		size = sizeof(bool);
+		break;
 	case JSON_TOK_ARRAY_START:
 	case JSON_TOK_OBJECT_START:
-		return descr->struct_size;
+		size = descr->struct_size;
+		break;
 	default:
-		return -EINVAL;
+		size = -EINVAL;
+		break;
 	}
+
+	printk("\tget_elem_size [%s:%s %p t: '%c' s: %u] size: %d\n",
+	       descr->struct_name ? descr->struct_name : "",
+	       descr->field_name ? descr->field_name : "", descr, descr->type, descr->struct_size,
+	       size);
+
+	return size;
 }
 
 static int arr_parse(struct json_obj *obj,
@@ -537,9 +613,16 @@ static int arr_parse(struct json_obj *obj,
 	void *last_elem;
 	struct json_token tok;
 
+	printk("\tarr_parse [%s:%s %p] f: %p (e: %p max: %u) v: %p s: %s\n",
+	       elem_descr->struct_name ? elem_descr->struct_name : "",
+	       elem_descr->field_name ? elem_descr->field_name : "", elem_descr, field, elements,
+	       max_elements, value, encode_obj_lex_start(obj));
+
 	/* For nested arrays, skip parent descriptor to get elements */
+	bool nested_arrays = false;
 	if (elem_descr->type == JSON_TOK_ARRAY_START) {
 		elem_descr = elem_descr->array.element_descr;
+		nested_arrays = true;
 	}
 
 	*elements = 0;
@@ -557,11 +640,11 @@ static int arr_parse(struct json_obj *obj,
 			return -ENOSPC;
 		}
 
-		/* For nested arrays, update value to current field,
-		 * so it matches descriptor's offset to length field
+		/* For nested arrays, set value to NULL to
+		 * make decode_value know that array is nested.
 		 */
 		if (elem_descr->type == JSON_TOK_ARRAY_START) {
-			value = field;
+			value = NULL;
 		}
 
 		if (decode_value(obj, elem_descr, &tok, field, value) < 0) {
@@ -623,6 +706,11 @@ static int64_t obj_parse(struct json_obj *obj, const struct json_obj_descr *desc
 	int64_t decoded_fields = 0;
 	size_t i;
 	int ret;
+
+	printk("\tobj_parse [%s:%s %p:%u s:%u] v: %p s: %s\n",
+	       descr->struct_name ? descr->struct_name : "",
+	       descr->field_name ? descr->field_name : "", descr, descr_len, descr->struct_size,
+	       val, encode_obj_lex_start(obj));
 
 	while (!obj_next(obj, &kv)) {
 		if (kv.value.type == JSON_TOK_OBJECT_END) {
@@ -842,6 +930,12 @@ static int arr_encode(const struct json_obj_descr *elem_descr,
 	size_t i;
 	int ret;
 
+	printk("\tarr_encode [%s:%s %p t: '%c' o: %u s: %u] count_ptr: %p count: %u val: %p\n",
+	       elem_descr->struct_name ? elem_descr->struct_name : "",
+	       elem_descr->field_name ? elem_descr->field_name : "", elem_descr, elem_descr->type,
+	       elem_descr->offset, elem_descr->struct_size, ((char *)val + elem_descr->offset),
+	       n_elem, val);
+
 	ret = append_bytes("[", 1, data);
 	if (ret < 0) {
 		return ret;
@@ -850,6 +944,7 @@ static int arr_encode(const struct json_obj_descr *elem_descr,
 	/* For nested arrays, skip parent descriptor to get elements */
 	if (elem_descr->type == JSON_TOK_ARRAY_START) {
 		elem_descr = elem_descr->array.element_descr;
+		field = (char*)field + elem_descr->offset;
 	}
 
 	elem_size = get_elem_size(elem_descr);
@@ -870,6 +965,8 @@ static int arr_encode(const struct json_obj_descr *elem_descr,
 		 * offset to the length field in the parent struct,
 		 * but that would add a size_t to every descriptor.
 		 */
+		printk("\t\tfield: %p - %u -> %p\n", field, elem_descr->offset,
+		       (char *)field - elem_descr->offset);
 		ret = encode(elem_descr, (char *)field - elem_descr->offset,
 			     append_bytes, data);
 		if (ret < 0) {
@@ -962,6 +1059,11 @@ static int bool_encode(const bool *value, json_append_bytes_t append_bytes,
 static int encode(const struct json_obj_descr *descr, const void *val,
 		  json_append_bytes_t append_bytes, void *data)
 {
+	printk("encode [%s:%s %p t: '%c' o: %u s: %u] val: %p + %u -> %p\n",
+	       descr->struct_name ? descr->struct_name : "",
+	       descr->field_name ? descr->field_name : "", descr, descr->type, descr->offset,
+	       descr->struct_size, val, descr->offset, (char *)val + descr->offset);
+
 	void *ptr = (char *)val + descr->offset;
 
 	switch (descr->type) {

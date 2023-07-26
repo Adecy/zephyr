@@ -1,0 +1,364 @@
+-- west build: running target run
+[0/1] To exit from QEMU enter: 'CTRL+a, x'[QEMU] CPU: qemu32,+nx,+pae
+[0mSeaBIOS (version zephyr-v1.0.0-0-g31d4e0e-dirty-20200714_234759-fv-az50-zephyr)
+Booting from ROM..
+*** Booting Zephyr OS build zephyr-v3.4.0-589-gc758ed425536 ***
+Running TESTSUITE lib_json_test
+===================================================================
+START - test_json_2dim_arr_obj_encoding
+	get_elem_size [struct obj_array:elements 0x10b000 t: '[' s: 84] size: 84
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+ PASS - test_json_2dim_arr_obj_encoding in 0.003 seconds
+===================================================================
+START - test_json_2dim_obj_arr_decoding
+	obj_parse [struct obj_array_2dim:objects_array_array 0x10af88:1 s:256] v: 0x110000 s: "objects_array_array":[[{"name"
+	decode_value [struct obj_array_2dim:objects_array_array 0x10af88 t: '[' o: 0 s: 256] f: 0x110000 v: 0x110000 s: [{"name":"Sim--n Bol--var","hei
+		decode_value arr sub_descr [struct obj_array_2dim:objects_array_array 0x10afa0 t: '[' o: 252 s: 256]
+	arr_parse [struct obj_array_2dim: 0x10afa0] f: 0x110000 (e: 0x1100fc max: 3) v: 0x110000 s: [{"name":"Sim--n Bol--var","hei
+	get_elem_size [struct obj_array:elements 0x10b000 t: '[' s: 84] size: 84
+	decode_value [struct obj_array:elements 0x10b000 t: '[' o: 0 s: 84] f: 0x110000 v: 0x110000 s: {"name":"Sim--n Bol--var","heig
+		decode_value arr sub_descr [struct obj_array:elements 0x10b018 t: '{' o: 80 s: 84]
+	arr_parse [struct obj_array: 0x10b018] f: 0x110000 (e: 0x110050 max: 10) v: 0x110000 s: {"name":"Sim--n Bol--var","heig
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110000 v: 0x110000 s: "name":"Sim--n Bol--var","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110000 s: "name":"Sim--n Bol--var","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110000 v: 0x110000 s: ,"height":168},{"name":"Pel--",
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110004 v: 0x110000 s: },{"name":"Pel--","height":173}
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110008 v: 0x110000 s: "name":"Pel--","height":173},{"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110008 s: "name":"Pel--","height":173},{"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110008 v: 0x110008 s: ,"height":173},{"name":"Usain B
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x11000c v: 0x110008 s: },{"name":"Usain Bolt","height"
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110010 v: 0x110000 s: "name":"Usain Bolt","height":19
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110010 s: "name":"Usain Bolt","height":19
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110010 v: 0x110010 s: ,"height":195}],[{"name":"Muggs
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110014 v: 0x110010 s: }],[{"name":"Muggsy Bogues","he
+	decode_value [struct obj_array:elements 0x10b000 t: '[' o: 0 s: 84] f: 0x110054 v: 0x110054 s: {"name":"Muggsy Bogues","height
+		decode_value arr sub_descr [struct obj_array:elements 0x10b018 t: '{' o: 80 s: 84]
+	arr_parse [struct obj_array: 0x10b018] f: 0x110054 (e: 0x1100a4 max: 10) v: 0x110054 s: {"name":"Muggsy Bogues","height
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110054 v: 0x110054 s: "name":"Muggsy Bogues","height"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110054 s: "name":"Muggsy Bogues","height"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110054 v: 0x110054 s: ,"height":160},{"name":"Hakeem 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110058 v: 0x110054 s: },{"name":"Hakeem Olajuwon","he
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x11005c v: 0x110054 s: "name":"Hakeem Olajuwon","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x11005c s: "name":"Hakeem Olajuwon","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x11005c v: 0x11005c s: ,"height":213}],[{"name":"Alex 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110060 v: 0x11005c s: }],[{"name":"Alex Honnold","hei
+	decode_value [struct obj_array:elements 0x10b000 t: '[' o: 0 s: 84] f: 0x1100a8 v: 0x1100a8 s: {"name":"Alex Honnold","height"
+		decode_value arr sub_descr [struct obj_array:elements 0x10b018 t: '{' o: 80 s: 84]
+	arr_parse [struct obj_array: 0x10b018] f: 0x1100a8 (e: 0x1100f8 max: 10) v: 0x1100a8 s: {"name":"Alex Honnold","height"
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x1100a8 v: 0x1100a8 s: "name":"Alex Honnold","height":
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x1100a8 s: "name":"Alex Honnold","height":
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x1100a8 v: 0x1100a8 s: ,"height":180},{"name":"Hazel F
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x1100ac v: 0x1100a8 s: },{"name":"Hazel Findlay","heig
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x1100b0 v: 0x1100a8 s: "name":"Hazel Findlay","height"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x1100b0 s: "name":"Hazel Findlay","height"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x1100b0 v: 0x1100b0 s: ,"height":157},{"name":"Daila O
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x1100b4 v: 0x1100b0 s: },{"name":"Daila Ojeda","height
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x1100b8 v: 0x1100a8 s: "name":"Daila Ojeda","height":1
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x1100b8 s: "name":"Daila Ojeda","height":1
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x1100b8 v: 0x1100b8 s: ,"height":158},{"name":"Albert 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x1100bc v: 0x1100b8 s: },{"name":"Albert Einstein","he
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x1100c0 v: 0x1100a8 s: "name":"Albert Einstein","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x1100c0 s: "name":"Albert Einstein","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x1100c0 v: 0x1100c0 s: ,"height":172}]]}
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x1100c4 v: 0x1100c0 s: }]]}
+ PASS - test_json_2dim_obj_arr_decoding in 0.045 seconds
+===================================================================
+START - test_json_arr_obj_decoding
+	arr_parse [struct obj_array: 0x10b018] f: 0x110100 (e: 0x110150 max: 10) v: 0x110100 s: {"height":168,"name":"Sim--n Bo
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110100 v: 0x110100 s: "height":168,"name":"Sim--n Bol
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110100 s: "height":168,"name":"Sim--n Bol
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110104 v: 0x110100 s: ,"name":"Sim--n Bol--var"},{"he
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110100 v: 0x110100 s: },{"height":173,"name":"Pel--"}
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110108 v: 0x110100 s: "height":173,"name":"Pel--"},{"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110108 s: "height":173,"name":"Pel--"},{"
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x11010c v: 0x110108 s: ,"name":"Pel--"},{"height":195,
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110108 v: 0x110108 s: },{"height":195,"name":"Usain B
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x110110 v: 0x110100 s: "height":195,"name":"Usain Bolt
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110110 s: "height":195,"name":"Usain Bolt
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110114 v: 0x110110 s: ,"name":"Usain Bolt"}]
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110110 v: 0x110110 s: }]
+ PASS - test_json_arr_obj_decoding in 0.013 seconds
+===================================================================
+START - test_json_arr_obj_encoding
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+ PASS - test_json_arr_obj_encoding in 0.003 seconds
+===================================================================
+START - test_json_decoding
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113cfc s: "some_string":"zephyr 123\uABCD
+	decode_value [struct test_struct:some_string 0x10ad80 t: '"' o: 0 s: 0] f: 0x113cfc v: 0x113cfc s: ,"some_int":-42-,"some_bool":tr
+	decode_value [struct test_struct:some_int 0x10ad98 t: '0' o: 4 s: 0] f: 0x113d00 v: 0x113cfc s: -,"some_bool":true    -  --   ,
+	decode_value [struct test_struct:some_bool 0x10adb0 t: 't' o: 8 s: 0] f: 0x113d04 v: 0x113cfc s:     -  --   ,"some_nested_struc
+	decode_value [struct test_struct:some_nested_struct 0x10adc8 t: '{' o: 12 s: 180] f: 0x113d08 v: 0x113cfc s:     "nested_int":-1234,--"neste
+		decode_value obj sub_descr [struct test_nested:some_nested_struct 0x10ae80 t: '0' o: 0 s: 180]
+	obj_parse [struct test_nested:nested_int 0x10ae80:3 s:0] v: 0x113d08 s:     "nested_int":-1234,--"neste
+	decode_value [struct test_nested:nested_int 0x10ae80 t: '0' o: 0 s: 0] f: 0x113d08 v: 0x113d08 s: ,--"nested_bool":false,-"nested
+	decode_value [struct test_nested:nested_bool 0x10ae98 t: 't' o: 4 s: 0] f: 0x113d0c v: 0x113d08 s: ,-"nested_string":"this should 
+	decode_value [struct test_nested:nested_string 0x10aeb0 t: '"' o: 8 s: 0] f: 0x113d10 v: 0x113d08 s: },"some_array":[11,22, 33,-45,-
+	decode_value [struct test_struct:some_array 0x10ade0 t: '[' o: 24 s: 180] f: 0x113d14 v: 0x113cfc s: 11,22, 33,-45,-299]"another_b!@
+		decode_value arr sub_descr [struct test_struct:some_array 0x10b060 t: '0' o: 88 s: 180]
+	arr_parse [struct test_struct: 0x10b060] f: 0x113d14 (e: 0x113d54 max: 16) v: 0x113cfc s: 11,22, 33,-45,-299]"another_b!@
+	get_elem_size [struct test_struct: 0x10b060 t: '0' s: 0] size: 4
+	decode_value [struct test_struct: 0x10b060 t: '0' o: 88 s: 0] f: 0x113d14 v: 0x113cfc s: ,22, 33,-45,-299]"another_b!@l"
+	decode_value [struct test_struct: 0x10b060 t: '0' o: 88 s: 0] f: 0x113d18 v: 0x113cfc s: , 33,-45,-299]"another_b!@l":tr
+	decode_value [struct test_struct: 0x10b060 t: '0' o: 88 s: 0] f: 0x113d1c v: 0x113cfc s: ,-45,-299]"another_b!@l":true,"
+	decode_value [struct test_struct: 0x10b060 t: '0' o: 88 s: 0] f: 0x113d20 v: 0x113cfc s: ,-299]"another_b!@l":true,"if":
+	decode_value [struct test_struct: 0x10b060 t: '0' o: 88 s: 0] f: 0x113d24 v: 0x113cfc s: ]"another_b!@l":true,"if":false
+	decode_value [struct test_struct:another_b!@l 0x10adf8 t: 't' o: 92 s: 0] f: 0x113d58 v: 0x113cfc s: ,"if":false,"another-array":[2,
+	decode_value [struct test_struct:if 0x10ae10 t: 't' o: 93 s: 0] f: 0x113d59 v: 0x113cfc s: ,"another-array":[2,3,5,7],"4no
+	decode_value [struct test_struct:another-array 0x10ae28 t: '[' o: 96 s: 0] f: 0x113d5c v: 0x113cfc s: 2,3,5,7],"4nother_ne$+":{"neste
+		decode_value arr sub_descr [struct test_struct:another-array 0x10b048 t: '0' o: 136 s: 0]
+	arr_parse [struct test_struct: 0x10b048] f: 0x113d5c (e: 0x113d84 max: 10) v: 0x113cfc s: 2,3,5,7],"4nother_ne$+":{"neste
+	get_elem_size [struct test_struct: 0x10b048 t: '0' s: 0] size: 4
+	decode_value [struct test_struct: 0x10b048 t: '0' o: 136 s: 0] f: 0x113d5c v: 0x113cfc s: ,3,5,7],"4nother_ne$+":{"nested
+	decode_value [struct test_struct: 0x10b048 t: '0' o: 136 s: 0] f: 0x113d60 v: 0x113cfc s: ,5,7],"4nother_ne$+":{"nested_i
+	decode_value [struct test_struct: 0x10b048 t: '0' o: 136 s: 0] f: 0x113d64 v: 0x113cfc s: ,7],"4nother_ne$+":{"nested_int
+	decode_value [struct test_struct: 0x10b048 t: '0' o: 136 s: 0] f: 0x113d68 v: 0x113cfc s: ],"4nother_ne$+":{"nested_int":
+	decode_value [struct test_struct:4nother_ne$+ 0x10ae40 t: '{' o: 140 s: 180] f: 0x113d88 v: 0x113cfc s: "nested_int":1234,"nested_bool"
+		decode_value obj sub_descr [struct test_nested:4nother_ne$+ 0x10ae80 t: '0' o: 0 s: 180]
+	obj_parse [struct test_nested:nested_int 0x10ae80:3 s:0] v: 0x113d88 s: "nested_int":1234,"nested_bool"
+	decode_value [struct test_nested:nested_int 0x10ae80 t: '0' o: 0 s: 0] f: 0x113d88 v: 0x113d88 s: ,"nested_bool":true,"nested_str
+	decode_value [struct test_nested:nested_bool 0x10ae98 t: 't' o: 4 s: 0] f: 0x113d8c v: 0x113d88 s: ,"nested_string":"no escape nec
+	decode_value [struct test_nested:nested_string 0x10aeb0 t: '"' o: 8 s: 0] f: 0x113d90 v: 0x113d88 s: },"nested_obj_array":[{"nested_
+	decode_value [struct test_struct:nested_obj_array 0x10ae58 t: '[' o: 152 s: 180] f: 0x113d94 v: 0x113cfc s: {"nested_int":1,"nested_bool":t
+		decode_value arr sub_descr [struct test_struct:nested_obj_array 0x10b030 t: '{' o: 176 s: 180]
+	arr_parse [struct test_struct: 0x10b030] f: 0x113d94 (e: 0x113dac max: 2) v: 0x113cfc s: {"nested_int":1,"nested_bool":t
+	get_elem_size [struct test_struct: 0x10b030 t: '{' s: 12] size: 12
+	decode_value [struct test_struct: 0x10b030 t: '{' o: 176 s: 12] f: 0x113d94 v: 0x113cfc s: "nested_int":1,"nested_bool":tr
+		decode_value obj sub_descr [struct test_nested: 0x10ae80 t: '0' o: 0 s: 12]
+	obj_parse [struct test_nested:nested_int 0x10ae80:3 s:0] v: 0x113d94 s: "nested_int":1,"nested_bool":tr
+	decode_value [struct test_nested:nested_int 0x10ae80 t: '0' o: 0 s: 0] f: 0x113d94 v: 0x113d94 s: ,"nested_bool":true,"nested_str
+	decode_value [struct test_nested:nested_bool 0x10ae98 t: 't' o: 4 s: 0] f: 0x113d98 v: 0x113d94 s: ,"nested_string":"true"},{"nest
+	decode_value [struct test_nested:nested_string 0x10aeb0 t: '"' o: 8 s: 0] f: 0x113d9c v: 0x113d94 s: },{"nested_int":0,"nested_bool"
+	decode_value [struct test_struct: 0x10b030 t: '{' o: 176 s: 12] f: 0x113da0 v: 0x113cfc s: "nested_int":0,"nested_bool":fa
+		decode_value obj sub_descr [struct test_nested: 0x10ae80 t: '0' o: 0 s: 12]
+	obj_parse [struct test_nested:nested_int 0x10ae80:3 s:0] v: 0x113da0 s: "nested_int":0,"nested_bool":fa
+	decode_value [struct test_nested:nested_int 0x10ae80 t: '0' o: 0 s: 0] f: 0x113da0 v: 0x113da0 s: ,"nested_bool":false,"nested_st
+	decode_value [struct test_nested:nested_bool 0x10ae98 t: 't' o: 4 s: 0] f: 0x113da4 v: 0x113da0 s: ,"nested_string":"false"}]}-
+	decode_value [struct test_nested:nested_string 0x10aeb0 t: '"' o: 8 s: 0] f: 0x113da8 v: 0x113da0 s: }]}-
+ PASS - test_json_decoding in 0.042 seconds
+===================================================================
+START - test_json_decoding_array_array
+	obj_parse [struct obj_array_array:objects_array 0x10afb8:1 s:36] v: 0x110160 s: "objects_array":[{"height":168,
+	decode_value [struct obj_array_array:objects_array 0x10afb8 t: '[' o: 0 s: 36] f: 0x110160 v: 0x110160 s: {"height":168,"name":"Sim--n Bo
+		decode_value arr sub_descr [struct obj_array_array:objects_array 0x10afd0 t: '[' o: 32 s: 36]
+	arr_parse [struct obj_array_array: 0x10afd0] f: 0x110160 (e: 0x110180 max: 4) v: 0x110160 s: {"height":168,"name":"Sim--n Bo
+	get_elem_size [struct array:objects 0x10afe8 t: '{' s: 8] size: 8
+	decode_value [struct array:objects 0x10afe8 t: '{' o: 0 s: 8] f: 0x110160 v: 0x110160 s: "height":168,"name":"Sim--n Bol
+		decode_value obj sub_descr [struct elt:objects 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110160 s: "height":168,"name":"Sim--n Bol
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110164 v: 0x110160 s: ,"name":"Sim--n Bol--var"},{"he
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110160 v: 0x110160 s: },{"height":173,"name":"Pel--"}
+	decode_value [struct array:objects 0x10afe8 t: '{' o: 0 s: 8] f: 0x110168 v: 0x110160 s: "height":173,"name":"Pel--"},{"
+		decode_value obj sub_descr [struct elt:objects 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110168 s: "height":173,"name":"Pel--"},{"
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x11016c v: 0x110168 s: ,"name":"Pel--"},{"height":195,
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110168 v: 0x110168 s: },{"height":195,"name":"Usain B
+	decode_value [struct array:objects 0x10afe8 t: '{' o: 0 s: 8] f: 0x110170 v: 0x110160 s: "height":195,"name":"Usain Bolt
+		decode_value obj sub_descr [struct elt:objects 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x110170 s: "height":195,"name":"Usain Bolt
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x110174 v: 0x110170 s: ,"name":"Usain Bolt"}]}
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x110170 v: 0x110170 s: }]}
+ PASS - test_json_decoding_array_array in 0.015 seconds
+===================================================================
+START - test_json_encode_bounds_check
+ PASS - test_json_encode_bounds_check in 0.001 seconds
+===================================================================
+START - test_json_encoding
+	get_elem_size [struct test_struct: 0x10b060 t: '0' s: 0] size: 4
+	get_elem_size [struct test_struct: 0x10b048 t: '0' s: 0] size: 4
+	get_elem_size [struct test_struct: 0x10b030 t: '{' s: 12] size: 12
+	get_elem_size [struct test_struct: 0x10b060 t: '0' s: 0] size: 4
+	get_elem_size [struct test_struct: 0x10b048 t: '0' s: 0] size: 4
+	get_elem_size [struct test_struct: 0x10b030 t: '{' s: 12] size: 12
+ PASS - test_json_encoding in 0.005 seconds
+===================================================================
+START - test_json_encoding_array_array
+	get_elem_size [struct array:objects 0x10afe8 t: '{' s: 8] size: 8
+ PASS - test_json_encoding_array_array in 0.001 seconds
+===================================================================
+START - test_json_escape
+ PASS - test_json_escape in 0.001 seconds
+===================================================================
+START - test_json_escape_bounds_check
+ PASS - test_json_escape_bounds_check in 0.001 seconds
+===================================================================
+START - test_json_escape_empty
+ PASS - test_json_escape_empty in 0.001 seconds
+===================================================================
+START - test_json_escape_no_op
+ PASS - test_json_escape_no_op in 0.001 seconds
+===================================================================
+START - test_json_escape_one
+ PASS - test_json_escape_one in 0.001 seconds
+===================================================================
+START - test_json_invalid_bool
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ee8 s: "some_bool":truffle }
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ee8 s: "some_bool":fallacy }
+ PASS - test_json_invalid_bool in 0.002 seconds
+===================================================================
+START - test_json_invalid_null
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ee8 s: "some_string":null }
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ee8 s: "some_string":nutella }
+ PASS - test_json_invalid_null in 0.002 seconds
+===================================================================
+START - test_json_invalid_number
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ef8 s: "some_int":xxx }
+ PASS - test_json_invalid_number in 0.001 seconds
+===================================================================
+START - test_json_invalid_string
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ed0 s: "some_string":"\u@@@@"}
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ed0 s: "some_string":"\uA@@@"}
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ed0 s: "some_string":"\uAB@@"}
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ed0 s: "some_string":"\uABC@"}
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113ed0 s: "some_string":"\X"}
+ PASS - test_json_invalid_string in 0.004 seconds
+===================================================================
+START - test_json_item_wrong_type
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113f08 s: "some_string":false}
+ PASS - test_json_item_wrong_type in 0.001 seconds
+===================================================================
+START - test_json_key_not_in_descr
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113f08 s: "key_not_in_descr":123456}
+ PASS - test_json_key_not_in_descr in 0.001 seconds
+===================================================================
+START - test_json_limits
+	obj_parse [struct test_int_limits:int_max 0x10ace0:3 s:0] v: 0x113f38 s: "int_max":2147483647,"int_cero"
+	decode_value [struct test_int_limits:int_max 0x10ace0 t: '0' o: 0 s: 0] f: 0x113f38 v: 0x113f38 s: ,"int_cero":0,"int_min":-214748
+	decode_value [struct test_int_limits:int_cero 0x10acf8 t: '0' o: 4 s: 0] f: 0x113f3c v: 0x113f38 s: ,"int_min":-2147483648}
+	decode_value [struct test_int_limits:int_min 0x10ad10 t: '0' o: 8 s: 0] f: 0x113f40 v: 0x113f38 s: }
+ PASS - test_json_limits in 0.004 seconds
+===================================================================
+START - test_json_missing_quote
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113f08 s: "some_string
+ PASS - test_json_missing_quote in 0.001 seconds
+===================================================================
+START - test_json_obj_arr_decoding
+	obj_parse [struct obj_array:elements 0x10b000:1 s:84] v: 0x113d8c s: "elements":[{"name":"Sim--n Bol
+	decode_value [struct obj_array:elements 0x10b000 t: '[' o: 0 s: 84] f: 0x113d8c v: 0x113d8c s: {"name":"Sim--n Bol--var","heig
+		decode_value arr sub_descr [struct obj_array:elements 0x10b018 t: '{' o: 80 s: 84]
+	arr_parse [struct obj_array: 0x10b018] f: 0x113d8c (e: 0x113ddc max: 10) v: 0x113d8c s: {"name":"Sim--n Bol--var","heig
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113d8c v: 0x113d8c s: "name":"Sim--n Bol--var","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113d8c s: "name":"Sim--n Bol--var","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113d8c v: 0x113d8c s: ,"height":168},{"name":"Muggsy 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113d90 v: 0x113d8c s: },{"name":"Muggsy Bogues","heig
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113d94 v: 0x113d8c s: "name":"Muggsy Bogues","height"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113d94 s: "name":"Muggsy Bogues","height"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113d94 v: 0x113d94 s: ,"height":160},{"name":"Pel--",
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113d98 v: 0x113d94 s: },{"name":"Pel--","height":173}
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113d9c v: 0x113d8c s: "name":"Pel--","height":173},{"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113d9c s: "name":"Pel--","height":173},{"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113d9c v: 0x113d9c s: ,"height":173},{"name":"Hakeem 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113da0 v: 0x113d9c s: },{"name":"Hakeem Olajuwon","he
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113da4 v: 0x113d8c s: "name":"Hakeem Olajuwon","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113da4 s: "name":"Hakeem Olajuwon","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113da4 v: 0x113da4 s: ,"height":213},{"name":"Alex Ho
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113da8 v: 0x113da4 s: },{"name":"Alex Honnold","heigh
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113dac v: 0x113d8c s: "name":"Alex Honnold","height":
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113dac s: "name":"Alex Honnold","height":
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113dac v: 0x113dac s: ,"height":180},{"name":"Hazel F
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113db0 v: 0x113dac s: },{"name":"Hazel Findlay","heig
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113db4 v: 0x113d8c s: "name":"Hazel Findlay","height"
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113db4 s: "name":"Hazel Findlay","height"
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113db4 v: 0x113db4 s: ,"height":157},{"name":"Daila O
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113db8 v: 0x113db4 s: },{"name":"Daila Ojeda","height
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113dbc v: 0x113d8c s: "name":"Daila Ojeda","height":1
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113dbc s: "name":"Daila Ojeda","height":1
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113dbc v: 0x113dbc s: ,"height":158},{"name":"Albert 
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113dc0 v: 0x113dbc s: },{"name":"Albert Einstein","he
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113dc4 v: 0x113d8c s: "name":"Albert Einstein","heigh
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113dc4 s: "name":"Albert Einstein","heigh
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113dc4 v: 0x113dc4 s: ,"height":172},{"name":"Usain B
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113dc8 v: 0x113dc4 s: },{"name":"Usain Bolt","height"
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113dcc v: 0x113d8c s: "name":"Usain Bolt","height":19
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113dcc s: "name":"Usain Bolt","height":19
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113dcc v: 0x113dcc s: ,"height":195},{"name":"Paavo N
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113dd0 v: 0x113dcc s: },{"name":"Paavo Nurmi","height
+	decode_value [struct obj_array: 0x10b018 t: '{' o: 80 s: 8] f: 0x113dd4 v: 0x113d8c s: "name":"Paavo Nurmi","height":1
+		decode_value obj sub_descr [struct elt: 0x10ad40 t: '"' o: 0 s: 8]
+	obj_parse [struct elt:name 0x10ad40:2 s:0] v: 0x113dd4 s: "name":"Paavo Nurmi","height":1
+	decode_value [struct elt:name 0x10ad40 t: '"' o: 0 s: 0] f: 0x113dd4 v: 0x113dd4 s: ,"height":174}]}
+	decode_value [struct elt:height 0x10ad58 t: '0' o: 4 s: 0] f: 0x113dd8 v: 0x113dd4 s: }]}
+ PASS - test_json_obj_arr_decoding in 0.041 seconds
+===================================================================
+START - test_json_obj_arr_encoding
+	get_elem_size [struct obj_array: 0x10b018 t: '{' s: 8] size: 8
+ PASS - test_json_obj_arr_encoding in 0.002 seconds
+===================================================================
+START - test_json_wrong_token
+	obj_parse [struct test_struct:some_string 0x10ad80:10 s:0] v: 0x113f08 s: "some_string",}
+ PASS - test_json_wrong_token in 0.001 seconds
+===================================================================
+START - test_large_descriptor
+	obj_parse [struct large_struct:int0 0x10a460:40 s:0] v: 0x113f1c s: "int1": 1,"int21": 21,"int31": 
+	decode_value [struct large_struct:int1 0x10a478 t: '0' o: 4 s: 0] f: 0x113f20 v: 0x113f1c s: ,"int21": 21,"int31": 31,"int39
+	decode_value [struct large_struct:int21 0x10a658 t: '0' o: 84 s: 0] f: 0x113f70 v: 0x113f1c s: ,"int31": 31,"int39": 39}
+	decode_value [struct large_struct:int31 0x10a748 t: '0' o: 124 s: 0] f: 0x113f98 v: 0x113f1c s: ,"int39": 39}
+	decode_value [struct large_struct:int39 0x10a808 t: '0' o: 156 s: 0] f: 0x113fb8 v: 0x113f1c s: }
+ PASS - test_large_descriptor in 0.005 seconds
+===================================================================
+TESTSUITE lib_json_test succeeded
+
+------ TESTSUITE SUMMARY START ------
+
+SUITE PASS - 100.00% [lib_json_test]: pass = 26, fail = 0, skip = 0, total = 26 duration = 0.198 seconds
+ - PASS - [lib_json_test.test_json_2dim_arr_obj_encoding] duration = 0.003 seconds
+ - PASS - [lib_json_test.test_json_2dim_obj_arr_decoding] duration = 0.045 seconds
+ - PASS - [lib_json_test.test_json_arr_obj_decoding] duration = 0.013 seconds
+ - PASS - [lib_json_test.test_json_arr_obj_encoding] duration = 0.003 seconds
+ - PASS - [lib_json_test.test_json_decoding] duration = 0.042 seconds
+ - PASS - [lib_json_test.test_json_decoding_array_array] duration = 0.015 seconds
+ - PASS - [lib_json_test.test_json_encode_bounds_check] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_encoding] duration = 0.005 seconds
+ - PASS - [lib_json_test.test_json_encoding_array_array] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_escape] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_escape_bounds_check] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_escape_empty] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_escape_no_op] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_escape_one] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_invalid_bool] duration = 0.002 seconds
+ - PASS - [lib_json_test.test_json_invalid_null] duration = 0.002 seconds
+ - PASS - [lib_json_test.test_json_invalid_number] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_invalid_string] duration = 0.004 seconds
+ - PASS - [lib_json_test.test_json_item_wrong_type] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_key_not_in_descr] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_limits] duration = 0.004 seconds
+ - PASS - [lib_json_test.test_json_missing_quote] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_json_obj_arr_decoding] duration = 0.041 seconds
+ - PASS - [lib_json_test.test_json_obj_arr_encoding] duration = 0.002 seconds
+ - PASS - [lib_json_test.test_json_wrong_token] duration = 0.001 seconds
+ - PASS - [lib_json_test.test_large_descriptor] duration = 0.005 seconds
+
+------ TESTSUITE SUMMARY END ------
+
+===================================================================
+PROJECT EXECUTION SUCCESSFUL
+ninja: build stopped: interrupted by user.

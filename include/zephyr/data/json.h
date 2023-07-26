@@ -77,6 +77,7 @@ struct json_obj_token {
 
 
 struct json_obj_descr {
+	const char *struct_name;
 	const char *field_name;
 
 	/* 127 characters is more than enough for a field name. */
@@ -145,6 +146,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
  */
 #define JSON_OBJ_DESCR_PRIM(struct_, field_name_, type_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (#field_name_), \
 		.field_name_len = sizeof(#field_name_) - 1, \
 		.type = type_, \
@@ -178,6 +180,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
  */
 #define JSON_OBJ_DESCR_OBJECT(struct_, field_name_, sub_descr_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (#field_name_), \
 		.field_name_len = (sizeof(#field_name_) - 1), \
 		.type = JSON_TOK_OBJECT_START, \
@@ -204,6 +207,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 	(const struct json_obj_descr[]) \
 	{ \
 		{ \
+			.struct_name = (#struct_), \
 			.type = elem_type_, \
 			.offset = offsetof(struct_, len_field_), \
 			.struct_size = 0u, \
@@ -266,6 +270,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define JSON_OBJ_DESCR_ARRAY(struct_, field_name_, max_len_, \
 			     len_field_, elem_type_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (#field_name_), \
 		.field_name_len = sizeof(#field_name_) - 1, \
 		.type = JSON_TOK_ARRAY_START, \
@@ -317,6 +322,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define JSON_OBJ_DESCR_OBJ_ARRAY(struct_, field_name_, max_len_, \
 				 len_field_, elem_descr_, elem_descr_len_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (#field_name_), \
 		.field_name_len = sizeof(#field_name_) - 1, \
 		.type = JSON_TOK_ARRAY_START, \
@@ -379,6 +385,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define JSON_OBJ_DESCR_ARRAY_ARRAY(struct_, field_name_, max_len_, len_field_, \
 				   elem_descr_, elem_descr_len_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (#field_name_), \
 		.field_name_len = sizeof(#field_name_) - 1, \
 		.type = JSON_TOK_ARRAY_START, \
@@ -413,6 +420,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define JSON_OBJ_DESCR_PRIM_NAMED(struct_, json_field_name_, \
 				  struct_field_name_, type_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (json_field_name_), \
 		.field_name_len = sizeof(json_field_name_) - 1, \
 		.type = type_, \
@@ -435,6 +443,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 #define JSON_OBJ_DESCR_OBJECT_NAMED(struct_, json_field_name_, \
 				    struct_field_name_, sub_descr_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (json_field_name_), \
 		.field_name_len = (sizeof(json_field_name_) - 1), \
 		.type = JSON_TOK_OBJECT_START, \
@@ -468,6 +477,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 				   struct_field_name_, max_len_, len_field_, \
 				   elem_type_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = (json_field_name_), \
 		.field_name_len = sizeof(json_field_name_) - 1, \
 		.type = JSON_TOK_ARRAY_START, \
@@ -527,6 +537,7 @@ typedef int (*json_append_bytes_t)(const char *bytes, size_t len,
 				       len_field_, elem_descr_, \
 				       elem_descr_len_) \
 	{ \
+		.struct_name = (#struct_), \
 		.field_name = json_field_name_, \
 		.field_name_len = sizeof(json_field_name_) - 1, \
 		.type = JSON_TOK_ARRAY_START, \
