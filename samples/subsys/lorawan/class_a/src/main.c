@@ -48,7 +48,7 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 int main(void)
 {
 	const struct device *lora_dev;
-	struct lorawan_join_config join_cfg;
+	struct lorawan_join_config join_cfg = {0};
 	uint8_t dev_eui[] = LORAWAN_DEV_EUI;
 	uint8_t join_eui[] = LORAWAN_JOIN_EUI;
 	uint8_t app_key[] = LORAWAN_APP_KEY;
@@ -90,6 +90,7 @@ int main(void)
 	join_cfg.otaa.join_eui = join_eui;
 	join_cfg.otaa.app_key = app_key;
 	join_cfg.otaa.nwk_key = app_key;
+	join_cfg.otaa.dev_nonce = 0u;
 
 	LOG_INF("Joining network over OTAA");
 	ret = lorawan_join(&join_cfg);
