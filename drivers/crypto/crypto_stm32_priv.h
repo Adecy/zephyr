@@ -34,9 +34,6 @@ struct crypto_stm32_session {
 	STM32_CRYPTO_CONFIG_TYPEDEF config;
 	uint32_t key[CRYPTO_STM32_AES_MAX_KEY_LEN / sizeof(uint32_t)];
 	bool in_use;
-#if DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
-	enum cipher_mode mode;
-#endif
 };
 
 #define CRYPTO_STM32_CFG(dev) \
@@ -47,12 +44,5 @@ struct crypto_stm32_session {
 
 #define CRYPTO_STM32_SESSN(ctx) \
 	((struct crypto_stm32_session *const)(ctx)->drv_sessn_state)
-
-static inline void session_set_algorithm(struct crypto_stm32_session *session, uint32_t algorithm)
-{
-#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
-	session->config.Algorithm = algorithm;
-#endif
-}
 
 #endif /* ZEPHYR_DRIVERS_CRYPTO_CRYPTO_STM32_PRIV_H_ */
