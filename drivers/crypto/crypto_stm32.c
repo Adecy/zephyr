@@ -25,6 +25,8 @@ LOG_MODULE_REGISTER(crypto_stm32);
 #define DT_DRV_COMPAT st_stm32_cryp
 #elif DT_HAS_COMPAT_STATUS_OKAY(st_stm32_aes)
 #define DT_DRV_COMPAT st_stm32_aes
+#elif DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
+#define DT_DRV_COMPAT st_stm32l4_aes
 #else
 #error No STM32 HW Crypto Accelerator in device tree
 #endif
@@ -43,6 +45,8 @@ LOG_MODULE_REGISTER(crypto_stm32);
 #define STM32_CRYPTO_TYPEDEF            CRYP_TypeDef
 #elif DT_HAS_COMPAT_STATUS_OKAY(st_stm32_aes)
 #define STM32_CRYPTO_TYPEDEF            AES_TypeDef
+#elif DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
+#define STM32_CRYPTO_TYPEDEF            AES_TypeDef
 #endif
 
 struct crypto_stm32_session crypto_stm32_sessions[CRYPTO_MAX_SESSION];
@@ -58,9 +62,12 @@ static int copy_reverse_words(uint8_t *dst_buf, int dst_len,
 	}
 
 	memcpy(dst_buf, src_buf, src_len);
+
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 	for (i = 0; i < dst_len; i += sizeof(uint32_t)) {
 		sys_mem_swap(&dst_buf[i], sizeof(uint32_t));
 	}
+#endif
 
 	return 0;
 }
@@ -73,7 +80,31 @@ static int do_encrypt(struct cipher_ctx *ctx, uint8_t *in_buf, int in_len,
 	struct crypto_stm32_data *data = CRYPTO_STM32_DATA(ctx->device);
 	struct crypto_stm32_session *session = CRYPTO_STM32_SESSN(ctx);
 
+	// TODO: copy to HAL device context
+	memcpy(&data->hcryp.Init, &session->config, sizeof(session->config));
+
 	k_sem_take(&data->device_sem, K_FOREVER);
+
+#if DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
+	switch (session->mode) {
+	case CRYPTO_CIPHER_MODE_ECB:
+		status = HAL_CRYP_AESECB_Encrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	case CRYPTO_CIPHER_MODE_CBC:
+		status = HAL_CRYP_AESCBC_Encrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	case CRYPTO_CIPHER_MODE_CTR:
+		status = HAL_CRYP_AESCTR_Encrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	default:
+		LOG_ERR("Unsupported mode");
+		k_sem_give(&data->device_sem);
+		return -EINVAL;
+	}
+#else
 
 	status = HAL_CRYP_SetConfig(&data->hcryp, &session->config);
 	if (status != HAL_OK) {
@@ -82,8 +113,9 @@ static int do_encrypt(struct cipher_ctx *ctx, uint8_t *in_buf, int in_len,
 		return -EIO;
 	}
 
-	status = HAL_CRYP_Encrypt(&data->hcryp, (uint32_t *)in_buf, in_len,
-				  (uint32_t *)out_buf, HAL_MAX_DELAY);
+	status = HAL_CRYP_Encrypt(&data->hcryp, (uint32_t *)in_buf, in_len, (uint32_t *)out_buf,
+				  HAL_MAX_DELAY);
+#endif
 	if (status != HAL_OK) {
 		LOG_ERR("Encryption error");
 		k_sem_give(&data->device_sem);
@@ -103,8 +135,31 @@ static int do_decrypt(struct cipher_ctx *ctx, uint8_t *in_buf, int in_len,
 	struct crypto_stm32_data *data = CRYPTO_STM32_DATA(ctx->device);
 	struct crypto_stm32_session *session = CRYPTO_STM32_SESSN(ctx);
 
+	// TODO: copy to HAL device context
+	memcpy(&data->hcryp.Init, &session->config, sizeof(session->config));
+
 	k_sem_take(&data->device_sem, K_FOREVER);
 
+#if DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
+	switch (session->mode) {
+	case CRYPTO_CIPHER_MODE_ECB:
+		status = HAL_CRYP_AESECB_Decrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	case CRYPTO_CIPHER_MODE_CBC:
+		status = HAL_CRYP_AESCBC_Decrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	case CRYPTO_CIPHER_MODE_CTR:
+		status = HAL_CRYP_AESCTR_Decrypt(&data->hcryp, in_buf, in_len, out_buf,
+						 HAL_MAX_DELAY);
+		break;
+	default:
+		LOG_ERR("Unsupported mode");
+		k_sem_give(&data->device_sem);
+		return -EINVAL;
+	}
+#else
 	status = HAL_CRYP_SetConfig(&data->hcryp, &session->config);
 	if (status != HAL_OK) {
 		LOG_ERR("Configuration error");
@@ -114,6 +169,8 @@ static int do_decrypt(struct cipher_ctx *ctx, uint8_t *in_buf, int in_len,
 
 	status = HAL_CRYP_Decrypt(&data->hcryp, (uint32_t *)in_buf, in_len,
 				  (uint32_t *)out_buf, HAL_MAX_DELAY);
+#endif
+
 	if (status != HAL_OK) {
 		LOG_ERR("Decryption error");
 		k_sem_give(&data->device_sem);
@@ -345,6 +402,7 @@ static int crypto_stm32_session_setup(const struct device *dev,
 	session = &crypto_stm32_sessions[ctx_idx];
 	memset(&session->config, 0, sizeof(session->config));
 
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 	if (data->hcryp.State == HAL_CRYP_STATE_RESET) {
 		if (HAL_CRYP_Init(&data->hcryp) != HAL_OK) {
 			LOG_ERR("Initialization error");
@@ -352,6 +410,7 @@ static int crypto_stm32_session_setup(const struct device *dev,
 			return -EIO;
 		}
 	}
+#endif
 
 	switch (ctx->keylen) {
 	case 16U:
@@ -367,18 +426,28 @@ static int crypto_stm32_session_setup(const struct device *dev,
 		break;
 	}
 
+#if DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
+	session->mode = mode;
+#endif
+	
 	if (op_type == CRYPTO_CIPHER_OP_ENCRYPT) {
 		switch (mode) {
 		case CRYPTO_CIPHER_MODE_ECB:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_ECB;
+#endif
 			ctx->ops.block_crypt_hndlr = crypto_stm32_ecb_encrypt;
 			break;
 		case CRYPTO_CIPHER_MODE_CBC:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_CBC;
+#endif
 			ctx->ops.cbc_crypt_hndlr = crypto_stm32_cbc_encrypt;
 			break;
 		case CRYPTO_CIPHER_MODE_CTR:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_CTR;
+#endif
 			ctx->ops.ctr_crypt_hndlr = crypto_stm32_ctr_encrypt;
 			break;
 		default:
@@ -387,15 +456,21 @@ static int crypto_stm32_session_setup(const struct device *dev,
 	} else {
 		switch (mode) {
 		case CRYPTO_CIPHER_MODE_ECB:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_ECB;
+#endif
 			ctx->ops.block_crypt_hndlr = crypto_stm32_ecb_decrypt;
 			break;
 		case CRYPTO_CIPHER_MODE_CBC:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_CBC;
+#endif
 			ctx->ops.cbc_crypt_hndlr = crypto_stm32_cbc_decrypt;
 			break;
 		case CRYPTO_CIPHER_MODE_CTR:
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 			session->config.Algorithm = CRYP_AES_CTR;
+#endif
 			ctx->ops.ctr_crypt_hndlr = crypto_stm32_ctr_decrypt;
 			break;
 		default:
@@ -411,7 +486,10 @@ static int crypto_stm32_session_setup(const struct device *dev,
 
 	session->config.pKey = session->key;
 	session->config.DataType = CRYP_DATATYPE_8B;
+
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 	session->config.DataWidthUnit = CRYP_DATAWIDTHUNIT_BYTE;
+#endif
 
 	ctx->drv_sessn_state = session;
 	ctx->device = dev;
@@ -440,12 +518,14 @@ static int crypto_stm32_session_free(const struct device *dev,
 		}
 	}
 
+#if !DT_HAS_COMPAT_STATUS_OKAY(st_stm32l4_aes)
 	/* Deinitialize and reset peripheral. */
 	if (HAL_CRYP_DeInit(&data->hcryp) != HAL_OK) {
 		LOG_ERR("Deinitialization error");
 		k_sem_give(&data->session_sem);
 		return -EIO;
 	}
+#endif
 
 	(void)reset_line_toggle_dt(&cfg->reset);
 
